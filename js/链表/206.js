@@ -23,16 +23,18 @@
  * @return {ListNode}
  */
 var reverseList = function(head) {
-  if (!head) {
-      return null
+  // 1.定义
+  let prev = null
+  let cur = head
+
+  while (cur) {
+    let next = cur.next
+    // 2.反转
+    cur.next = prev
+
+    // 3.移动
+    prev = cur
+    cur = next
   }
-  let prevNode = null
-  let curNode = head
-  while (curNode) {
-      const nextNode = curNode.next
-      curNode.next = prevNode
-      prevNode = curNode
-      curNode = nextNode
-  }
-  return prevNode
+  return prev
 };

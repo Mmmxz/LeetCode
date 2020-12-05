@@ -61,6 +61,7 @@ var removeNthFromEnd = function(head, n) {
   // 2.创建虚拟头结点
   let dummyNode = new ListNode(0, head)
   // 3.循环 length-n 次使得 cur 结点移动到要删除结点的前一位
+  // tips.本来循环 length-n-1 次会到达要删除结点的前一位 但是此时 cur 指向虚拟头结点 所以需要多循环一次 即 length-n 次
   let cur = dummyNode
   for (let i = 0; i < length - n; i++) {
       cur = cur.next
