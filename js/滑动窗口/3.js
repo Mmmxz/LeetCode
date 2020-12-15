@@ -11,7 +11,7 @@
 
 // 输入: s = "bbbbb"
 // 输出: 1
-解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+// 解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
 // 示例 3:
 
 // 输入: s = "pwwkew"
@@ -33,11 +33,11 @@
 // 链接：https://leetcode-cn.com/problems/longest-substring-without-repeating-characters
 // 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
-// 滑动窗口
 /**
  * @param {string} s
  * @return {number}
  */
+// 滑动窗口
 var lengthOfLongestSubstring = function(s) {
     // 1.定义闭区间 [l...r] res 存储最长子串长度
     let l = 0, r = -1, res = 0
@@ -45,15 +45,14 @@ var lengthOfLongestSubstring = function(s) {
     let freq = new Set()
     // 3.当左边界到达字符串末尾时终止
     while(l < s.length) {
-        // 4.r 向后移动一位 增加窗口大小
         if (r + 1 < s.length && !freq.has(s[r + 1])) {
-            // 5.1.当窗口对应子串不包含下一位字符时 将其纳入窗口 指针后移
+            // 4.1.当窗口对应子串不包含下一位字符时 将其纳入窗口 指针后移 窗口长度加一
             freq.add(s[++r])
         } else {
-            // 5.2.当窗口对应子串包含下一位字符时 l 向前移动一位 窗口长度减一
+            // 4.2.当窗口对应子串包含下一位字符时 l 向前移动一位 窗口长度减一
             freq.delete(s[l++])
         }
-        // 6. 结果取当前子串长度和之前存储长度的最大值
+        // 5. 结果取当前子串长度和之前存储长度的最大值
         res = Math.max(res, r-l+1)
     }
     return res
