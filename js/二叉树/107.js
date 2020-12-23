@@ -47,6 +47,7 @@ var levelOrderBottom = function(root) {
     }
     res.push(subArr)
   }
+  // 自底向上只需要翻转层序遍历结果
   return res.reverse()
 };
 
