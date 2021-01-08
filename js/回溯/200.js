@@ -70,7 +70,7 @@ var numIslands = function(grid) {
     for (let j = 0; j < w; j++) {
       // 该区域未访问 且值为 1
       if (grid[i][j] === '1' && !visited[i][j]) {
-        // 符合要求 省份 +1 调用 dfs 方法 标记相邻的省份
+        // 符合要求 岛屿 +1 调用 dfs 方法 标记相邻的岛屿
         res++
         floodfill(grid, i, j)
       }
