@@ -20,15 +20,14 @@
  * @return {number}
  */
 var lengthOfLIS = function(nums) {
-  const length = nums.length
-  if (length === 0) {
-    return 0
-  }
-  const dp = new Array(length).fill(1)
-  for (let i = 0; i < nums.length; i++) {
+  // dp[i] 代表 [0, i] 的最长递增子序列
+  // dp[i] = max(dp[i], dp[j] + 1) j < i && nums[j] < nums[i]
+  const len = nums.length
+  let dp = new Array(len).fill(1)
+  for (let i = 1; i < len; i++) {
     for (let j = 0; j < i; j++) {
-      if (nums[i] > nums[j]) {
-        dp[i] = Math.max(dp[j] + 1, dp[i])
+      if (nums[j] < nums[i]) {
+        dp[i] = Math.max(dp[i], dp[j] + 1)
       }
     }
   }
