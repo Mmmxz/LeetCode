@@ -21,7 +21,7 @@
 var maximumProduct = function(nums) {
   const len = nums.length
   // 1.从小到大排序
-  nums = nums.sort((a, b) => a - b)
+  nums.sort((a, b) => a - b)
   // 2.返回 max( 最大三个数乘积 , 最小两个数与最大一个数的乘积 ) 负负得正
   return Math.max(nums[0] * nums[1] * nums[len - 1], nums[len - 2] * nums[len - 3] * nums[len - 1])
 };
