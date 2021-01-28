@@ -34,6 +34,7 @@
  * @param {number[][]} isConnected
  * @return {number}
  */
+// 解法 1 ：回溯
 var findCircleNum = function(isConnected) {
   // 城市的数量
   const len = isConnected.length
@@ -61,3 +62,57 @@ var findCircleNum = function(isConnected) {
   }
   return res
 };
+
+// 解法 2 ：并查集
+/**
+ * @param {number[][]} isConnected
+ * @return {number}
+ */
+var findCircleNum = function(isConnected) {
+  const len = isConnected.length
+  let uf = new UnionFind(len)
+  for (let i = 0; i < len; i++) {
+    for (let j = i + 1; j < len; j++) {
+      if (isConnected[i][j] === 1) {
+        uf.unite(i, j)
+      }
+    }
+  }
+  return uf.getCount()
+};
+
+class UnionFind {
+  constructor(n) {
+    this.count = n
+    this.parent = new Array(n).fill(0).map((item, index) => index)
+    this.size = new Array(n).fill(1)
+  }
+  find(x) {
+    while (this.parent[x] !== x) {
+      this.parent[x] = this.parent[this.parent[x]]
+      x = this.parent[x]
+    }
+    return x
+  }
+  unite(p, q) {
+    const rootp = this.find(p), rootq = this.find(q)
+    if (rootp === rootq) {
+      return false
+    }
+    if (this.size[rootp] > this.size[rootq]) {
+      this.parent[rootq] = rootp
+      this.size[rootp] += this.size[rootq]
+    } else {
+      this.parent[rootp] = rootq
+      this.size[rootq] += this.size[rootp]
+    }
+    this.count -= 1
+    return true
+  }
+  connected(p, q) {
+    return find(p) === find(q)
+  }
+  getCount() {
+    return this.count
+  }
+}
