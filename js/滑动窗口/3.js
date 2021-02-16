@@ -37,7 +37,7 @@
  * @param {string} s
  * @return {number}
  */
-// 滑动窗口
+// 解法 1 ：滑动窗口
 var lengthOfLongestSubstring = function(s) {
     // 1.定义闭区间 [l...r] res 存储最长子串长度
     let l = 0, r = -1, res = 0
@@ -57,3 +57,24 @@ var lengthOfLongestSubstring = function(s) {
     }
     return res
 };
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+// 解法 2 ：滑窗模板
+var lengthOfLongestSubstring = function(s) {
+    let left = 0, right = 0, window = [], max = 0
+    while (right < s.length) {
+      const c = s[right]
+      right++
+      window.push(c)
+      // 检查重复 只需要检查最新加的在之前有没有就行
+      while (window.slice(0, window.length - 1).includes(c)) {
+        left++
+        window.shift()
+      }
+      max = Math.max(right - left, max)
+    }
+    return max
+  };
