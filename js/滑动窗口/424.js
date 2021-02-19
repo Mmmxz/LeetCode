@@ -23,6 +23,7 @@
  * @param {number} k
  * @return {number}
  */
+// 解法 1 ：滑动窗口
 var characterReplacement = function(s, k) {
   // array 存储 26 个字母出现的次数
   const hash = new Array(26).fill(0)
@@ -50,3 +51,30 @@ var characterReplacement = function(s, k) {
 };
 
 // 参考题解 https://leetcode-cn.com/problems/longest-repeating-character-replacement/solution/tong-guo-ci-ti-liao-jie-yi-xia-shi-yao-shi-hua-don/
+
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {number}
+ */
+// 解法 2 ：滑窗模板
+var characterReplacement = function(s, k) {
+  const hash = new Array(26).fill(0) // 【当前窗口中】每个字母出现的次数
+  let left = 0, right = 0, maxHistoryLength = 0
+  while (right < s.length) {
+    // 每次进入字符，出现次数 +1
+    const index = s[right].charCodeAt() - 'A'.charCodeAt()
+    hash[index]++
+    right++
+    // 更新历史最大长度
+    maxHistoryLength = Math.max(maxHistoryLength, hash[index])
+    // 当滑窗长度大于历史最大长度 + k 时，窗口滑动；否则窗口扩张
+    if (right - left > maxHistoryLength + k) {
+      const leftIndex = s[left].charCodeAt() - 'A'.charCodeAt()
+      hash[leftIndex]--
+      left++
+    }
+  }
+  // 窗口宽度就是最大的宽度
+  return right - left
+};
