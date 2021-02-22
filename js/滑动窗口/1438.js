@@ -43,6 +43,7 @@
  * @param {number} limit
  * @return {number}
  */
+// 解法 1 ：每次对滑窗排序 方便找到最值 6000ms
 var longestSubarray = function(nums, limit) {
   let left = 0, right = 0, ans = 0, window = []
   // [left...right)
@@ -80,3 +81,46 @@ var insertSort = function(arr, num) {
   arr.splice(index, 0, num)
   return arr
 }
+
+/**
+ * @param {number[]} nums
+ * @param {number} limit
+ * @return {number}
+ */
+// 解法 2 ：单调队列 900ms
+var longestSubarray = function(nums, limit) {
+  // 单调队列 queMin从小到大 queMax从大到小
+  let left = 0, right = 0, ans = 0
+  const  queMin = [], queMax = []
+  while (right < nums.length) {
+    const c = nums[right]
+    // 保证从小到大 即queMin的最后一个元素小于c
+    while (queMin.length && queMin[queMin.length - 1] > c) {
+      queMin.pop()
+    }
+    // 保证从大到小 即quemax的最后一个元素大于c
+    while (queMax.length && queMax[queMax.length - 1] < c) {
+      queMax.pop()
+    }
+    // 入队 保证从小到大和从大到小的顺序
+    queMin.push(c)
+    queMax.push(c)
+    right++
+    // 移动窗口
+    while (queMin.length && queMax.length && queMax[0] - queMin[0] > limit) {
+      // 当窗口中绝对差大于limit 不符合条件 窗口滑动
+      const d = nums[left]
+      // 如果出去的元素是最小值 那么队列也要出
+      if (d === queMin[0]) {
+        queMin.shift()
+      }
+      // 如果出去的元素是最大值 那么队列也要出
+      if (d === queMax[0]) {
+        queMax.shift()
+      }
+      left++
+    }
+    ans = Math.max(ans, right - left)
+  }
+  return ans
+};
