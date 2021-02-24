@@ -35,6 +35,7 @@
  * @param {TreeNode} root
  * @return {number}
  */
+// 解法 1 ：递归
 var minDepth = function(root) {
   // 1.递归到 null 节点 返回高度 0
   if (!root) return 0
@@ -50,4 +51,41 @@ var minDepth = function(root) {
   } else {
     return 1
   }
+};
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+// 解法 2 ： bfs
+var minDepth = function(root) {
+  if (!root) {
+    return 0
+  }
+  let queue = [root], depth = 1
+  while (queue.length) {
+    let size = queue.length
+    for (let i = 0; i < size; i++) {
+      let cur = queue.shift()
+      if (!cur.left && !cur.right) {
+        return depth
+      }
+      if (cur.left) {
+        queue.push(cur.left)
+      }
+      if (cur.right) {
+        queue.push(cur.right)
+      }
+    }
+    depth++
+  }
+  return depth
 };
