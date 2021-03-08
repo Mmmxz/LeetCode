@@ -102,3 +102,46 @@ const isPalindrome = (str) => {
   dfs(s, [])
   return res
 };
+
+/**
+ * @param {string} s
+ * @return {string[][]}
+ */
+// 解法 3 ：回溯 + 动态规划
+ var partition = function(s) {
+  // dp[i][j] [i...j]是回文串
+  // i===j; j-1===1&&s[i]===s[j]; j-i>1&&s[i]===s[j]&&dp[i+1][j-1]
+  const n = s.length, res = []
+  // 初始化dp
+  const dp = new Array(n).fill(false).map(() => new Array(n).fill(false))
+  for (let j = 0; j < n; j++) {
+    for (let i = 0; i <= j; i++) {
+      if (i === j) {
+        dp[i][j] = true
+      } else if (j - i === 1 && s[i] === s[j]) {
+        dp[i][j] = true
+      } else if (j - i > 1 && s[i] === s[j] && dp[i + 1][j - 1]) {
+        dp[i][j] = true
+      }
+    }
+  }
+  // 回溯
+  const dfs = (start, path) => {
+    if (start === n) {
+      res.push(path.slice())
+      return
+    }
+    // [start...j]
+    for (let j = start; j < n; j++) {
+      if (dp[start][j]) {
+        // substring(i, j) 从索引i开始切到j的字符串 不包括j
+        // substr(i, j) 从索引i开始切j长度的字符串
+        path.push(s.substring(start, j + 1))
+        dfs(j + 1, path)
+        path.pop()
+      }
+    }
+  }
+  dfs(0, [])
+  return res
+};
