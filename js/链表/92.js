@@ -57,3 +57,50 @@ var reverseBetween = function(head, m, n) {
 // 当前节点的下一个节点3调整为前驱节点的下一个节点 1->3->2->4->5
 // 当前结点仍为2， 前驱结点依然是1，重复上一步操作...
 // 1->4->3->2->5.
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} left
+ * @param {number} right
+ * @return {ListNode}
+ */
+// 解法 2 ：截取要反转的部分 反转后接回原链表 prev指向left的前一位 end指向right的后一位
+ var reverseBetween = function(head, left, right) {
+  let dummyNode = new ListNode(-1, head)
+  let prev = dummyNode
+  for (let i = 0; i < left - 1; i++) {
+    prev = prev.next
+  }
+  let leftNode = prev.next
+  let rightNode = leftNode
+  for (let i = 0; i < right - left; i++) {
+    rightNode = rightNode.next
+  }
+  let end = rightNode.next
+  // 切断节点
+  rightNode.next = null
+  prev.next = null
+  // 反转leftNode链表
+  reverse(leftNode)
+  // rightNode成为头结点 leftNode成为尾结点
+  prev.next = rightNode
+  leftNode.next = end
+  return dummyNode.next
+};
+
+const reverse = function (root) {
+  let prev = null, cur = root
+  while (cur) {
+    let next = cur.next
+    cur.next = prev
+    prev = cur
+    cur = next
+  }
+}

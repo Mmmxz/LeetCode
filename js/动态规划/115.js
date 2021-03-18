@@ -53,14 +53,16 @@
  var numDistinct = function(s, t) {
   // 从后往前匹配 
   const len1 = s.length, len2 = t.length
+  // memo[i][j]保存从s[0...i]中包含t[0...j]的子序列个数
   const memo = new Array(len1).fill(-1).map(() => new Array(len2).fill(-1))
   const helper = (i, j) => {
+    // 先判断t 此时不需要管s是否为空 都可以匹配；如果先判断s 则需要看此时t是否为空 t为空则匹配到 t不为空则匹配不到
     if (j < 0) {
-      // t 遍历完了 i为0或者大于0 即s是空串或者还有 则一定匹配的上
+      // t 遍历完了 成为空串 此时s为空串 或者删光自己的字符 都可以匹配到t 个数为1
       return 1
     }
     if (i < 0) {
-      // s 小于0了 t本次还未遍历完
+      // s 小于0了 成为空串 此时t不是空串 个数为0
       return 0
     }
     if (memo[i][j] !== -1) {
@@ -84,20 +86,23 @@
  * @param {string} t
  * @return {number}
  */
-// 解法 2 ：动态规划
  var numDistinct = function(s, t) {
-  // dp[i][j] 代表s[0...i] t[0...j]相等的子序列个数 s[0]代表空串
+  // dp 解法
+  // dp[i][j]：从开头到s[i-1]的子串中，出现『从开头到t[i-1]的子串』的 次数。
+  // 即：前 i 个字符的 s 子串中，出现前 j 个字符的 t 子串的次数。
+  // 状态转移方程：
+  // s[i-1] === t[j-1] dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
+  // s[i-1] !== t[j-1] dp[i][j] = dp[i - 1][j]
+  // base case
+  // j === 0, dp[i][0] = 1
+  // i === 0, dp[0][j] = 0
   const slen = s.length, tlen = t.length
   const dp = new Array(slen + 1).fill(0).map(() => new Array(tlen + 1).fill(0))
   for (let i = 0; i <= slen; i++) {
-    // 当t为空串时 dp[i][j] = 1
     dp[i][0] = 1
   }
-  for (let i = 1; i <= slen; i++) {
-    for (let j = 1; j <= tlen; j++) {
-      if (j > i) {
-        continue
-      }
+  for (let i = 1; i < slen + 1; i++) {
+    for (let j = 1; j < tlen + 1; j++) {
       if (s[i - 1] === t[j - 1]) {
         dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j]
       } else {
@@ -107,5 +112,3 @@
   }
   return dp[slen][tlen]
 };
-
-// todo 理解不到位
