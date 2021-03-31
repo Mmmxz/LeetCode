@@ -40,3 +40,26 @@ var subsets = function(nums) {
   dfs(0, [])
   return ans  
 };
+
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+ var subsets = function(nums) {
+  const n = nums.length
+  let res = []
+  const backtrack = (index, arr) => {
+    res.push(arr.slice())
+    // 枚举当前可选的数 每次从index开始遍历
+    for (let i = index; i < n; i++) {
+      arr.push(nums[i])
+      // 注意此处是从当前选的i往后找
+      backtrack(i + 1, arr)
+      arr.pop()
+    }
+  }
+  backtrack(0, [])
+  return res
+};
+
+// 参考题解：https://leetcode-cn.com/problems/subsets/solution/shou-hua-tu-jie-zi-ji-hui-su-fa-xiang-jie-wei-yun-/
