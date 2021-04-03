@@ -36,10 +36,10 @@
  * @param {string} text2
  * @return {number}
  */
-// 解法 1 ：动态规划 自顶向下
+// 解法 1 ：备忘录 自顶向下
 var longestCommonSubsequence = function(text1, text2) {
   const len1 = text1.length, len2 = text2.length
-  // 备忘录
+  // 备忘录 代表分别以 i j 开始的 LCS 长度
   const memo = new Array(len1).fill(0).map(() => new Array(len2).fill(-1))
   const dp = function(str1, i, str2, j) {
     if (i === str1.length || j === str2.length) {
@@ -65,3 +65,27 @@ var longestCommonSubsequence = function(text1, text2) {
   return dp(text1, 0, text2, 0)
 };
 
+/**
+ * @param {string} text1
+ * @param {string} text2
+ * @return {number}
+ */
+// 解法 2 ：动态规划 自底向上
+ var longestCommonSubsequence = function(text1, text2) {
+  // dp[i][j] 代表 text1的[0,i-1] text2的[0,j-1]的LCS
+  const len1 = text1.length, len2 = text2.length
+  // 对于i为0或j为0时 对应的是空串 所以LCS一定是0
+  const dp = new Array(len1 + 1).fill(0).map(() => new Array(len2 + 1).fill(0))
+  for (let i = 1; i <= len1; i++) {
+    for (let j = 1; j <= len2; j++) {
+      if (text1[i - 1] === text2[j - 1]) {
+        dp[i][j] = 1 + dp[i - 1][j - 1]
+      } else {
+        dp[i][j] = Math.max(dp[i][j - 1], dp[i - 1][j])
+      }
+    }
+  }
+  return dp[len1][len2]
+};
+
+// 参考题解： https://leetcode-cn.com/problems/longest-common-subsequence/solution/fu-xue-ming-zhu-er-wei-dong-tai-gui-hua-r5ez6/
