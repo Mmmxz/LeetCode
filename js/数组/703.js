@@ -74,4 +74,97 @@ KthLargest.prototype.add = function(val) {
  */
 
 // 解法 2 ：小顶堆
-// todo
+/**
+ * @param {number} k
+ * @param {number[]} nums
+ */
+ var KthLargest = function(k, nums) {
+  this.k = k
+  // 构建堆
+  this.heap = new minHeap()
+  for (let num of nums) {
+    this.heap.insert(num)
+  }
+};
+
+/** 
+ * @param {number} val
+ * @return {number}
+ */
+KthLargest.prototype.add = function(val) {
+  this.heap.insert(val)
+  // 堆容量为k
+  while (this.heap.getCount() > this.k) {
+    this.heap.extract()
+  }
+  return this.heap.top()
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * var obj = new KthLargest(k, nums)
+ * var param_1 = obj.add(val)
+ */
+class minHeap {
+  constructor() {
+    this.list = [0]
+    this.count = 0
+  }
+  insert(num) {
+    // 入堆时，加到末尾，执行上浮操作
+    this.count++
+    this.list.push(num)
+    // 上浮 传入索引
+    this.shiftUp(this.count)
+  }
+  shiftUp(i) {
+    // 如果大于父元素 或到达顶点 就停止
+    while (i > 1 && this.list[i] < this.list[this.parent(i)]) {
+      this.swap(i, this.parent(i))
+      i = this.parent(i)
+    }
+  }
+  extract() {
+    // 出堆顶 将最后一个元素放到堆顶 然后执行下沉操作
+    this.swap(1, this.count)
+    this.count--
+    this.shiftDown(1)
+    return this.list.pop()
+  }
+  shiftDown(i) {
+    // 下沉 和子元素中更小的交换 直到不能交换或者没有子元素
+    while (this.left(i) <= this.count) {
+      let min = this.left(i)
+      if (this.right(i) <= this.count && this.list[this.right(i)] < this.list[this.left(i)]) {
+        min = this.right(i)
+      }
+      // 如果根节点小于较小的子节点 说明满足小根堆 此时不继续循环
+      if (this.list[i] <= this.list[min]) {
+        break
+      }
+      // 否则交换
+      this.swap(i, min)
+      i = min
+    }
+  }
+  parent(node) {
+    return Math.floor(node / 2)
+  }
+  left(node) {
+    return node * 2
+  }
+  right(node) {
+    return node * 2 + 1
+  }
+  swap(i, j) {
+    let temp = this.list[i]
+    this.list[i] = this.list[j]
+    this.list[j] = temp
+  }
+  getCount() {
+    return this.count
+  }
+  top() {
+    return this.list[1]
+  }
+}
