@@ -70,3 +70,20 @@ var hasCycle = function(head) {
   }
   return false
 };
+
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+ var hasCycle = function(head) {
+  // 双指针
+  let p = head, q = head
+  while (q && q.next) {
+    p = p.next
+    q = q.next.next
+    if (p === q) {
+      return true
+    }
+  }
+  return false
+};

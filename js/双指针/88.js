@@ -61,7 +61,7 @@
  * @return {void} Do not return anything, modify nums1 in-place instead.
  */
  var merge = function(nums1, m, nums2, n) {
-  //  把nums2放入nums1后面 然后排序
+  //  把nums2放入nums1后面 然后排序 不推荐
   for (let i = m; i < m + n; i++) {
     nums1[i] = nums2.shift()
   }
