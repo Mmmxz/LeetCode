@@ -35,6 +35,8 @@
 // 前缀和
 var NumArray = function(nums) {
   const len = nums.length
+  // 前缀和 计算任意 [i~j] 的和 可以转化为 [0~j] 的和减去 [0~i) 的和
+  // 方便处理边界情况 转化为 j+1 存储前 j 个数的和
   const arr = new Array(len + 1).fill(0)
   // arr[i] 存储[0...i)的和
   let sum = 0
