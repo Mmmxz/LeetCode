@@ -43,3 +43,21 @@ var maxProfit = function(prices) {
   }
   return money
 };
+
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+// 贪心算法
+ var maxProfit = function(prices) {
+  const n = prices.length
+  // 记录每一天之前的最小价格作为买入价格 同时求利润
+  let min = prices[0], max = 0
+  for (let i = 1; i < n; i++) {
+    if (prices[i - 1] < min) {
+      min = prices[i - 1]
+    }
+    max = Math.max(max, prices[i] - min)
+  }
+  return max
+};
