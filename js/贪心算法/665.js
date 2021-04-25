@@ -55,3 +55,32 @@ var checkPossibility = function(nums) {
 // 3.1.如果 a[i - 1] > a[i + 1] 就需要使 a[i + 1] 变大为 a[i] 如 -1,4,-2
 // 3.2.如果 a[i - 1] < a[i + 1] 就需要使 a[i] 变小为 a[i + 1] 如 -1,4,2
 // 4.其他情况都可以将 a[i] 变小。
+
+
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+ var checkPossibility = function(nums) {
+  const n = nums.length
+  let count = 0
+  // 目标：得到一个递增序列
+  // 当出现递减时 可以改前面的数 也可以改后面的数 尽量改前面的 这样不会影响后面
+  // 什么情况下只能改后面的 当前面的数改了后 使前面变为递减时 此时就必须改后面
+  for (let i = 1; i < n; i++) {
+    if (nums[i - 1] > nums[i]) {
+      // 当nums[i-1]改为nums[i]后 使前面变成递减 即nums[i-2]>nums[i-1] 这时候必须改后面
+      if (i > 1 && nums[i - 2] > nums[i]) {
+        nums[i] = nums[i - 1]
+      } else {
+        // 其余情况都改前面即可
+        nums[i - 1] = nums[i]
+      }
+      count++
+    }
+    if (count > 1) {
+      return false
+    }
+  }
+  return true
+};
