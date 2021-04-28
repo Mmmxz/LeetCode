@@ -39,6 +39,7 @@
  * @param {number[][]} points
  * @return {number}
  */
+// 解法 1 ：贪心 右边界排序
  var findMinArrowShots = function(points) {
   // 找重叠的区间有多少个
   const n = points.length
@@ -60,3 +61,33 @@
 };
 
 // 贪心法 每个气球只少需要一支箭 先按照右端点排序 然后每次从最小的右端点射出一支箭 去掉被射爆的气球 重复该过程
+
+/**
+ * @param {number[][]} points
+ * @return {number}
+ */
+// 解法 2 ：贪心 左边界排序
+ var findMinArrowShots = function(points) {
+  // 按左边从小到大排序 然后在右边界射箭
+  // 如果下一个和当前这个有交集 则不用继续射箭 但要更新这一箭为两者右边界的较小值 防止前一个范围包裹着当前范围的情况
+  // 如果没有交集 则继续射箭
+  const n = points.length
+  if (!n) {
+    return 0
+  }
+  points.sort((a, b) => a[0] - b[0])
+  // 初始化时 在右边界射一箭
+  let end = points[0][1], count = 1
+  for (let i = 1; i < n; i++) {
+    // 如果没重合 射一箭
+    if (points[i][0] > end) {
+      count++
+      end = points[i][1]
+    } else {
+      // 有交集 如果新的右边界小于旧的又边界 则射箭位置要选较小的右边界 否则新的无法被射中
+      // 如[1,4] [2,3] 第一箭在4处 则[2,3]有交集 但无法射中 要更新到3处
+      end = Math.min(end, points[i][1])
+    }
+  }
+  return count
+};
