@@ -59,7 +59,29 @@ var eraseOverlapIntervals = function(intervals) {
  * @param {number[][]} intervals
  * @return {number}
  */
-// 解法 2 ：动态规划 O(n2) 复杂度较高
+// 解法 2 ：贪心
+ var eraseOverlapIntervals = function(intervals) {
+  // 右边界排序
+  const n = intervals.length
+  if (!n) return 0
+  intervals.sort((a, b) => a[1] - b[1])
+  let end = intervals[0][1], count = 1 // 代表要选择的不重叠区间个数
+  for (let i = 1; i < n; i++) {
+    if (intervals[i][0] >= end) {
+      // 不重叠区间 选择它
+      count++
+      end = intervals[i][1]
+    }
+    // 重叠区间不用管
+  }
+  return n - count
+};
+
+/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+// 解法 3 ：动态规划 O(n2) 复杂度较高
  var eraseOverlapIntervals = function(intervals) {
   // 定义 dp[i] 为以区间i为结束的不重叠区间数量
   const n = intervals.length
