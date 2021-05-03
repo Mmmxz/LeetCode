@@ -69,3 +69,31 @@ var reverse = function(x) {
   }
   return res
 };
+
+/**
+ * @param {number} x
+ * @return {number}
+ */
+// 解法 3 ：双指针
+ var reverse = function(x) {
+  const MAX = Math.pow(2, 31) - 1, MIN = -Math.pow(2, 31)
+  x = x.toString().split('')
+  let left = 0, right = x.length - 1
+  while (left < right) {
+    // 符号位略过
+    if (Number.isNaN(Number(x[left]))) {
+      left++
+    }
+    // 交换数字
+    let temp = x[left]
+    x[left] = x[right]
+    x[right] = temp
+    left++
+    right--
+  }
+  x = x.join('')
+  if (Number(x) < MIN || Number(x) > MAX) {
+    return 0
+  }
+  return Number(x)
+};
