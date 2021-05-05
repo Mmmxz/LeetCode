@@ -62,3 +62,24 @@
   }
   return dp[0]
 };
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+// 解法 3 ：动态规划
+ var rob = function(nums) {
+  // 定义 dp[i] 代表以i为结束的最高金额 最后返回dp[n-1]
+  const n = nums.length
+  if (n <= 2) {
+    return Math.max(...nums)
+  }
+  const dp = new Array(n).fill(0)
+  dp[0] = nums[0]
+  dp[1] = Math.max(nums[0], nums[1])
+  // dp[i] = max(dp[i - 1], dp[i - 2] + nums[i]) // 前一个偷了 这个不偷 前一个没偷 这个偷了
+  for (let i = 2; i < n; i++) {
+    dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i])
+  }
+  return dp[n - 1]
+};
