@@ -51,3 +51,26 @@
   }
   return ans
 };
+
+/**
+ * @param {string} s
+ * @return {number[]}
+ */
+ var partitionLabels = function(s) {
+  // 记录每个字符的结束位置 然后合并即可
+  const memo = new Array(26).fill(0)
+  const len = s.length
+  for (let i = 0; i < len; i++) {
+    memo[s[i].charCodeAt() - 'a'.charCodeAt()] = i
+  }
+  const ans = []
+  let start = end = 0
+  for (let i = 0; i < len; i++) {
+    end = Math.max(end, memo[s[i].charCodeAt() - 'a'.charCodeAt()])
+    if (i === end) {
+      ans.push(end - start + 1)
+      start = end = i + 1
+    }
+  }
+  return ans
+};
