@@ -75,7 +75,7 @@ var inorderTraversal = function(root) {
  * @param {TreeNode} root
  * @return {number[]}
  */
-// 解法 2 ：栈
+// 解法 2 ：栈 和前序遍历 #144 类似
  var inorderTraversal = function(root) {
   let stack = [], res = []
   while (root || stack.length) {

@@ -96,3 +96,30 @@ var preorderTraversal = function(root) {
   preorder(root)
   return res
 };
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+// 解法 3 ：迭代 和中序遍历 #94 类似
+ var preorderTraversal = function(root) {
+  const stack = [], res = []
+  while (stack.length || root) {
+    while (root) {
+      res.push(root.val)
+      stack.push(root)
+      root = root.left
+    }
+    root = stack.pop()
+    root = root.right
+  }
+  return res
+};
