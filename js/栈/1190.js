@@ -32,6 +32,7 @@
 // 我们确保所有括号都是成对出现的
 
 /**
+ * @description 参考题解思路
  * @param {string} s
  * @return {string}
  */
@@ -53,4 +54,39 @@
     }
   }
   return res
+};
+
+
+/**
+ * @param {string} s
+ * @return {string}
+ */
+ var reverseParentheses = function(s) {
+  // 1.左括号 入栈  2.连续字符 入栈  3. 右括号 出栈且翻转字符 直到碰到左括号 将结果入栈 4.直到循环完成 栈空
+  let stack = []
+  const n = s.length
+  for (let i = 0; i < n; i++) {
+    if (s[i] === '(') {
+      stack.push(s[i])
+    } else if (s[i] === ')') {
+      // wihle 直到匹配到左括号为止
+      let top = stack.pop(), str = ''
+      while (top !== '(') {
+        // 栈顶一定是字符串 将其反转
+        str += top.split('').reverse().join('')
+        top = stack.pop()
+      }
+      if (str !== '') {
+        stack.push(str)
+      }
+    } else {
+      // 找到连续的字符 加入栈中
+      let str = s[i]
+      while (i + 1 < n && s[i + 1] !== '(' && s[i + 1] !== ')') {
+        str += s[++i]
+      }
+      stack.push(str)
+    }
+  }
+  return stack.join('')
 };
