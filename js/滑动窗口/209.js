@@ -50,3 +50,30 @@ var minSubArrayLen = function(s, nums) {
   }
   return result
 };
+
+/**
+ * @description 滑窗模板
+ * @param {number} target
+ * @param {number[]} nums
+ * @return {number}
+ */
+ var minSubArrayLen = function(target, nums) {
+  // 滑窗
+  const n = nums.length
+  let left = 0, right = 0 // [left, right) 左闭右开
+  let sum = 0, res = Number.MAX_SAFE_INTEGER
+  while (right < n) {
+    const c = nums[right]
+    right++
+    sum += c
+    // 什么时候移动窗口
+    while (sum >= target) {
+      // 记录窗口长度
+      res = Math.min(right - left, res)
+      const d = nums[left]
+      sum -= d
+      left++
+    }
+  }
+  return res === Number.MAX_SAFE_INTEGER ? 0 : res
+};
