@@ -102,5 +102,48 @@ class MinHeap {
   }
 }
 
+/**
+ * @description 解法 2 ：快速排序
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortArray = function(nums) {
+  // 快速排序
+  quickSort(nums, 0, nums.length - 1)
+  return nums
+};
 
-// todo 快速排序 归并排序
+const quickSort = (nums, low, high) => {
+  if (low < high) {
+    const index = partition(nums, low, high)
+    quickSort(nums, low, index - 1)
+    quickSort(nums, index + 1, high)
+  }
+}
+
+const partition = (nums, low, high) => {
+  // 分块 选索引0作为基准 将小于基准的放在左边 大于基准的放在右边 返回基准的索引
+  let base = nums[low], start = low // 基准值
+  // 将大于基准值的数放在右侧 小于基准值的数放在左侧
+  while (low < high) {
+    // 从后往前遍历 当大于基准值时 保持位置不变
+    while (low < high && nums[high] >= base) high--
+    // 从前往后遍历 当小于基准值时 保持位置不变
+    while (low < high && nums[low] <= base) low++
+    if (low >= high) {
+      break
+    }
+    swap(nums, low, high)
+  }
+  // 交换基准值和当前的low
+  swap(nums, start, low)
+  return low
+}
+
+const swap = (nums, i, j) => {
+  let temp = nums[i]
+  nums[i] = nums[j]
+  nums[j] = temp
+}
+
+// todo 归并排序
