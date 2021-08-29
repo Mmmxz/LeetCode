@@ -64,3 +64,23 @@ var sumOddLengthSubarrays = function(arr) {
   }  
   return sum
 };
+
+/**
+ * @param {number[]} arr
+ * @return {number}
+ */
+var sumOddLengthSubarrays = function(arr) {
+  const n = arr.length, prefix = new Array(n + 1).fill(0)
+  for (let i = 0; i < n; i++) {
+    prefix[i + 1] = prefix[i] + arr[i]
+  }
+  let sum = 0
+  // 奇数长度子数组 [left, right] right-left+1=len
+  for (let len = 1; len <= n; len += 2) {
+    for (let left = 0; len + left - 1 < n; left++) {
+      const right = len + left - 1
+      sum += prefix[right + 1] - prefix[left]
+    }
+  }
+  return sum
+};
