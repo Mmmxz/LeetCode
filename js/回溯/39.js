@@ -60,3 +60,34 @@
   dfs(0, target, [])
   return res
 };
+
+
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum = function(candidates, target) {
+  // 组合，每组答案无序，需要start记录开始位置
+  const n = candidates.length, ans = []
+  const dfs = (start, path, sum) => {
+    if (sum === target) {
+      ans.push(path.slice())
+      return
+    }
+    // 选择范围
+    for (let i = start; i < n; i++) {
+      // 剪枝
+      if (sum > target) {
+        // 因为没从小到大排序 所以这里continue 而不是break
+        continue
+      }
+      path.push(candidates[i])
+      // 可以重复使用
+      dfs(i, path, sum + candidates[i])
+      path.pop()
+    }
+  }
+  dfs(0, [], 0)
+  return ans
+};
