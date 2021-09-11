@@ -29,22 +29,50 @@
  * @return {number}
  */
 var minPathSum = function(grid) {
-  // dp[i][j]代表到达i,j的和最小 返回dp[m-1][n-1]
-  // dp[i][j]=min(dp[i-1][j], dp[i][j-1]) + grid[i][j]
+  // dp[i][j]代表从左上角到[i,j]的最小和 return dp[m-1][n-1]
+  // dp[0][0] = grid[0][0]
+  // dp[i][j] = min( dp[i-1][j], dp[i][j-1] ) + grid[i][j]
   const m = grid.length, n = grid[0].length
   const dp = new Array(m).fill(0).map(() => new Array(n).fill(0))
   for (let i = 0; i < m; i++) {
     for (let j = 0; j < n; j++) {
       if (i === 0 && j === 0) {
-        dp[i][j] = grid[i][j]
+        dp[0][0] = grid[0][0]
       } else if (i === 0 && j > 0) {
-        dp[i][j] = grid[i][j] + dp[i][j - 1]
+        dp[0][j] = dp[0][j - 1] + grid[0][j]
       } else if (i > 0 && j === 0) {
-        dp[i][j] = grid[i][j] + dp[i - 1][j]
+        dp[i][0] = dp[i - 1][0] + grid[i][0]
       } else {
-        dp[i][j] = grid[i][j] + Math.min(dp[i - 1][j], dp[i][j - 1])
+        dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]
       }
     }
   }
-  return dp[m-1][n-1]
+  return dp[m - 1][n - 1]
+};
+
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var minPathSum = function(grid) {
+  // 回溯 超时
+  const m = grid.length, n = grid[0].length
+  let ans = Number.MAX_SAFE_INTEGER
+  const direction = [[0, 1], [1, 0]]
+  const inArea = (i, j) => i >= 0 && i < m && j >= 0 && j < n
+  const dfs = (i, j, sum) => {
+    if (i === m - 1 && j === n - 1) {
+      ans = Math.min(ans, sum)
+      return
+    }
+    for (let k = 0; k < 2; k++) {
+      const newx = direction[k][0] + i
+      const newy = direction[k][1] + j
+      if (inArea(newx, newy)) {
+        dfs(newx, newy, sum + grid[newx][newy])
+      }
+    }
+  }
+  dfs(0, 0, grid[0][0])
+  return ans
 };
