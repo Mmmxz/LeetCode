@@ -35,3 +35,38 @@ var lengthOfLIS = function(nums) {
 };
 
 console.log(lengthOfLIS([10,9,2,5,3,7,101,18]))
+
+
+/**
+ * @description 贪心 + 二分
+ * @param {number[]} nums
+ * @return {number}
+ */
+var lengthOfLIS = function(nums) {
+  const n = nums.length, cell = [nums[0]]
+  for (let i = 1; i < n; i++) {
+    if (nums[i] > cell[cell.length - 1]) {
+      cell.push(nums[i])
+      continue
+    }
+    // 用nums[i]替换cell中比它大的数中最小的数
+    // 用二分法找cell中比nums[i]大的最小索引
+    let low = 0, high = cell.length - 1
+    while(low <= high) {
+      const mid = Math.floor((high - low) / 2) + low
+      if (cell[mid] === nums[i]) {
+        // 中点等于target时 继续往左边找较小的
+        high--
+      } else if (cell[mid] > nums[i]) {
+        // 中点大于target时 继续往左边找较小的
+        high--
+      } else {
+        // 中点小于target时 继续往右边找较大的
+        low++
+      }
+    }
+    // [high,low] 当找到合适的值 依然会往左边找 结束后 low是要被替换的值
+    cell[low] = nums[i]
+  }
+  return cell.length
+};
