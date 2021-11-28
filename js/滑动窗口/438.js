@@ -86,3 +86,45 @@ var findAnagrams = function(s, p) {
 // 1、统计p串中所需字符
 // 2、开始遍历s串，同时通过right扩大滑动窗口，随着新字符进入窗口，如果新字符是所需字符就更新滑动窗口中的字符记录，当窗口中字符数和所需字符数一致时，得到一个新的有效字符，有效字符数自增。
 // 3、当滑动窗口的大小超出p串长度时，先判断所需要的字符是否都在窗口中，如果是则保存当前滑动窗口中子串的起始索引。然后接着通过left收缩窗口，随着字符离开窗口，如果离开的字符是所需字符，且窗口中的字符数和所需字符数一致时，就少了一个有效字符，有效字符数自减。然后更新滑动窗口中的字符记录。
+
+
+/**
+ * @param {string} s
+ * @param {string} p
+ * @return {number[]}
+ * @description 滑窗模板
+ */
+var findAnagrams = function(s, p) {
+  const needs = new Map(), window = new Map()
+  for (const char of p) {
+    needs.set(char, needs.has(char) ? needs.get(char) + 1 : 1)
+  }
+  // valid 记录当前有效的字母个数 当有效值和needs.size相等 说明符合条件
+  let left = 0, right = 0, valid = 0 // [left,right)
+  const len = s.length, ans = []
+  while (right < len) {
+    const c = s[right++]
+    if (needs.has(c)) {
+      window.set(c, window.has(c) ? window.get(c) + 1 : 1)
+      if (window.get(c) === needs.get(c)) {
+        valid++
+      }
+    }
+    // 什么时候缩小窗口
+    while (right - left === p.length) {
+      // 先判断是否符合条件
+      if (valid === needs.size) {
+        ans.push(left)
+      }
+      const d = s[left++]
+      // 如果d是有效位 则需要在window里面删除
+      if (needs.has(d)) {
+        if (needs.get(d) === window.get(d)) {
+          valid--
+        }
+        window.set(d, window.get(d) - 1)
+      }
+    }
+  }
+  return ans
+};
