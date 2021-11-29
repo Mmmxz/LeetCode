@@ -146,4 +146,84 @@ const swap = (nums, i, j) => {
   nums[j] = temp
 }
 
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortArray = function(nums) {
+  const heap = new Heap((a, b) => a < b)
+  for (const num of nums) {
+    heap.insert(num)
+  }
+  let ans = []
+  for (let i = 0; i < nums.length; i++) {
+    ans.push(heap.extract())
+  }
+  return ans
+};
+
+class Heap {
+  constructor(compare = (a, b) => a < b) {
+    this.heap = [0]
+    this.count = 0
+    this.compare = compare
+  }
+  insert(num) {
+    this.heap.push(num)
+    this.count++
+    this.shiftUp(this.count)
+  }
+  shiftUp(i) {
+    // 当前节点有父节点且小于它的父节点时 上浮
+    while (i > 1 && this.compare(this.heap[i], this.heap[this.parent(i)])) {
+    // while (i > 1 && this.heap[i] < this.heap[this.parent(i)]) {
+      // 交换位置
+      this.swap(i, this.parent(i))
+      i = this.parent(i)
+    }
+  }
+  extract() {
+    this.swap(1, this.count)
+    this.count--
+    this.shiftDown(1)
+    return this.heap.pop()
+  }
+  shiftDown(i) {
+    // 下沉 直到它小于左右孩子 或 没有左右孩子
+    while (this.left(i) <= this.count) {
+      // 有左孩子 找出左右孩子里较小的
+      let min = this.left(i)
+      if (this.right(i) <= this.count && this.compare(this.heap[this.right(i)], this.heap[this.left(i)])) {
+      // if (this.right(i) <= this.count && this.heap[this.left(i)] > this.heap[this.right(i)]) {
+        min = this.right(i)
+      }
+      // 比较当前值和min的大小 看是否需要交换
+      if (this.compare(this.heap[min], this.heap[i])) {
+      // if (this.heap[i] > this.heap[min]) {
+        this.swap(i, min)
+        i = min
+      } else {
+        break
+      }
+    }
+  }
+  swap(i, j) {
+    let temp = this.heap[i]
+    this.heap[i] = this.heap[j]
+    this.heap[j] = temp
+  }
+  parent(i) {
+    return Math.floor(i / 2)
+  }
+  left(i) {
+    return i * 2
+  }
+  right(i) {
+    return i * 2 + 1
+  }
+}
+
+
 // todo 归并排序
+
+
