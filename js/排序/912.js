@@ -224,6 +224,40 @@ class Heap {
 }
 
 
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ * @description 优化快排
+ */
+var sortArray = function(nums) {
+  // 快排：选取基准值，分块，将元素分成两部分，然后分别对每部分进行基准值分块
+  quickSort(nums, 0, nums.length - 1)
+  return nums
+};
+
+const quickSort = (nums, low, high) => {
+  if (low < high) {
+    const base = partition(nums, low, high)
+    // 对两部分分别做快排
+    quickSort(nums, low, base - 1)
+    quickSort(nums, base + 1, high)
+  }
+}
+
+// 分块 返回基准值的索引
+const partition = (nums, low, high) => {
+  let base = nums[low] // 保存位置
+  while (low < high) {
+    while (low < high && nums[high] >= base) high--
+    nums[low] = nums[high]
+    while (low < high && nums[low] <= base) low++
+    nums[high] = nums[low]
+  }
+  nums[low] = base
+  return low
+}
+
+
 // todo 归并排序
 
 
