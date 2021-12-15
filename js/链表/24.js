@@ -61,3 +61,23 @@ var swapPairs = function(head) {
   }
   return dummyNode.next
 };
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var swapPairs = function(head) {
+  if (head == null || head.next == null) return head
+  let newHead = head.next
+  // newHead.next代表除了这两个节点之外的链表 将其交换 然后head指向它的头部
+  head.next = swapPairs(newHead.next)
+  newHead.next = head
+  return newHead
+};
