@@ -42,3 +42,29 @@ var containsNearbyDuplicate = function(nums, k) {
   // 5.循环结束 代表没有符合的情况 返回 false
   return false
 };
+
+
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {boolean}
+ */
+var containsNearbyDuplicate = function(nums, k) {
+  // 滑动窗口-大小为k+1 判断滑动窗口中是否有重复元素
+  const n = nums.length
+  let left = 0, right = 0 // [0,0)
+  let memo = new Set()
+  while (right < n) {
+    const c = nums[right++]
+    if (right - left > k + 1) {
+      const d = nums[left++]
+      memo.delete(d)
+    }
+    if (memo.has(c)) {
+      return true
+    } else {
+      memo.add(c)
+    }
+  }
+  return false
+};
