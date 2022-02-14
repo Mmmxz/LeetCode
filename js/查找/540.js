@@ -35,3 +35,17 @@
   }
   return nums[low]
 };
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var singleNonDuplicate = function(nums) {
+  // 当前数和下一个是否相等 如果不相等则返回
+  const n = nums.length
+  for (let i = 0; i < n; i += 2) {
+    if (nums[i] !== nums[i + 1]) {
+      return nums[i]
+    }
+  }
+};
