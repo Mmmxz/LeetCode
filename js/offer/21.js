@@ -42,3 +42,24 @@ var exchange = function(nums) {
   }
   return nums
 };
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var exchange = function(nums) {
+  let left = 0, right = nums.length - 1
+  while (left < right) {
+    // 何时交换
+    while (nums[left] % 2 === 1) left++
+    while (nums[right] % 2 === 0) right--
+    if (left < right) {
+      let temp = nums[left]
+      nums[left] = nums[right]
+      nums[right] = temp
+    }
+    left++
+    right--
+  }
+  return nums
+};
